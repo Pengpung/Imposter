@@ -12,6 +12,10 @@ export default {
         "2xl": "1400px",
       },
     },
+    fontFamily: {
+      heading: ['Sora', 'sans-serif'],
+      body: ['Manrope', 'sans-serif'],
+    },
     extend: {
       colors: {
         border: "hsl(var(--border))",
