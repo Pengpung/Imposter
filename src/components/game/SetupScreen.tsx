@@ -1,30 +1,38 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Users, Eye, EyeOff, Skull } from "lucide-react";
+import { useLanguage } from "@/lib/language-context";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 interface SetupScreenProps {
   onStart: (playerCount: number, spyCount: number, blankCount: number) => void;
 }
 
 export function SetupScreen({ onStart }: SetupScreenProps) {
+  const { t } = useLanguage();
   const [playerCount, setPlayerCount] = useState(6);
   const [spyCount, setSpyCount] = useState(1);
   const [blankCount, setBlankCount] = useState(0);
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
+      {/* 语言切换按钮 - 右上角 */}
+      <div className="absolute top-6 right-6">
+        <LanguageSwitcher />
+      </div>
+
       <div className="w-full max-w-md animate-fade-in">
         <div className="text-center mb-10">
           <h1 className="font-heading text-5xl font-bold tracking-tight mb-3">
-            <span className="text-accent">谁</span>是卧底
+            {t('gameTitle')}
           </h1>
-          <p className="text-muted-foreground text-lg">国家版 · 单机传屏模式</p>
+          <p className="text-muted-foreground text-lg">{t('gameSubtitle')}</p>
         </div>
 
         <div className="rounded-xl border border-border bg-card p-6 space-y-6">
           <CounterRow
             icon={<Users className="w-5 h-5 text-accent" />}
-            label="玩家人数"
+            label={t('players')}
             value={playerCount}
             min={4}
             max={12}
@@ -32,7 +40,7 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
           />
           <CounterRow
             icon={<EyeOff className="w-5 h-5 text-primary" />}
-            label="卧底人数"
+            label={t('spies')}
             value={spyCount}
             min={1}
             max={Math.floor(playerCount / 3)}
@@ -40,7 +48,7 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
           />
           <CounterRow
             icon={<Skull className="w-5 h-5 text-muted-foreground" />}
-            label="白板人数"
+            label={t('blanks')}
             value={blankCount}
             min={0}
             max={Math.max(0, playerCount - spyCount - 2)}
@@ -53,7 +61,7 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
           className="w-full mt-6 h-14 text-lg font-heading font-semibold bg-primary hover:bg-primary/90 animate-pulse-neon"
         >
           <Eye className="w-5 h-5 mr-2" />
-          开始游戏
+          {t('startGame')}
         </Button>
       </div>
     </div>
