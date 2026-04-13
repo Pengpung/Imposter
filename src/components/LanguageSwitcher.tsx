@@ -1,18 +1,28 @@
-import React, { useState } from 'react';
+import { useLanguage } from '@/lib/language-context';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Globe } from 'lucide-react';
 
-const LanguageSwitcher = () => {
-    const [language, setLanguage] = useState('English');
+export function LanguageSwitcher() {
+  const { language, setLanguage } = useLanguage();
 
-    const toggleLanguage = () => {
-        setLanguage(prevLang => prevLang === 'English' ? 'Spanish' : 'English');
-    };
-
-    return (
-        <div>
-            <h1>{language}</h1>
-            <button onClick={toggleLanguage}>Switch Language</button>
-        </div>
-    );
-};
-
-export default LanguageSwitcher;
+  return (
+    <div className="flex items-center gap-2">
+      <Globe className="w-4 h-4 text-muted-foreground" />
+      <Select value={language} onValueChange={(value) => setLanguage(value as 'en' | 'zh')}>
+        <SelectTrigger className="w-[100px]">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="en">English</SelectItem>
+          <SelectItem value="zh">中文</SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
+  );
+}
