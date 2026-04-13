@@ -1,3 +1,3 @@
-# Welcome to your Lovable project
+# Welcome to your project
 
-TODO: Document your project here
+This is a imposter game that only for countries.
