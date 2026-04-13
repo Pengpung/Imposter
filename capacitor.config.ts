@@ -1,12 +1,26 @@
-// capacitor.config.ts
-
-import { CapacitorConfig } from '@capacitor/core';
+import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.example.app',
+  appId: 'com.pengpung.imposter',
   appName: 'Imposter',
-  webDir: 'www',
-  bundledWebRuntime: false,
+  webDir: 'dist',
+  server: {
+    androidScheme: 'https'
+  },
+  plugins: {
+    SplashScreen: {
+      launchShowDuration: 0,
+      launchAutoHide: true,
+    },
+    StatusBar: {
+      overlaysWebView: true,
+      backgroundColor: '#000000',
+      style: 'dark',
+    },
+    Keyboard: {
+      resizeOnFullScreen: true,
+    }
+  }
 };
 
 export default config;
