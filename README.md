@@ -1,3 +1,3 @@
-# Welcome to your project
+# 欢迎来到“谁是卧底”
 
-This is a imposter game that only for countries.
+这是一个经典的“谁是卧底”小游戏，目前词库中仅有中文的国家，所以也只支持游玩国家词的游戏。
