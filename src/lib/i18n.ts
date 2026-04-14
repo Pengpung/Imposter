@@ -95,7 +95,7 @@ export const translations = {
   },
   zh: {
     gameTitle: '谁是卧底',
-    gameSubtitle: '国家版 · 单机模式',
+    gameSubtitle: '国家词库',
     
     // SetupScreen
     players: '玩家人数',
