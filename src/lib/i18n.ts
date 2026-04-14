@@ -95,9 +95,9 @@ export const translations = {
   },
   zh: {
     gameTitle: '谁是卧底',
-    gameSubtitle: '国家版 · 单机传屏模式',
-
-    // Setup
+    gameSubtitle: '国家版 · 单机模式',
+    
+    // SetupScreen
     players: '玩家人数',
     spies: '卧底人数',
     blanks: '白板人数',
