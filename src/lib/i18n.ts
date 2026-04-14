@@ -42,7 +42,7 @@ export const translations = {
   zh: {
     // 游戏标题和描述
     gameTitle: '谁是卧底',
-    gameSubtitle: '国家版 · 单机传屏模式',
+    gameSubtitle: '国家版 · 单机模式',
     
     // SetupScreen
     players: '玩家人数',
