@@ -29,7 +29,7 @@ export function createGame(
   blankCount: number = 0,
   language: Language = 'zh'
 ): GameState {
-  const pair = getRandomPair();
+  const pair = getRandomPair(language);
   const roles: PlayerRole[] = [];
 
   for (let i = 0; i < spyCount; i++) roles.push("spy");
