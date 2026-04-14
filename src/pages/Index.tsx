@@ -4,11 +4,13 @@ import { ViewWordScreen } from "@/components/game/ViewWordScreen";
 import { DiscussionScreen } from "@/components/game/DiscussionScreen";
 import { VotingScreen } from "@/components/game/VotingScreen";
 import { ResultScreen } from "@/components/game/ResultScreen";
+import { OnlineSetup } from "@/components/game/OnlineSetup";
 import { createGame, eliminatePlayer, type GameState } from "@/lib/game-logic";
 import { useLanguage } from "@/lib/language-context";
 
 export default function Index() {
   const [game, setGame] = useState<GameState | null>(null);
+  const [mode, setMode] = useState<"menu" | "online">("menu");
   const { language } = useLanguage();
 
   const handleStart = (playerCount: number, spyCount: number, blankCount: number) => {
@@ -33,7 +35,11 @@ export default function Index() {
     setGame(eliminatePlayer(game, playerId));
   };
 
-  if (!game) return <SetupScreen onStart={handleStart} />;
+  if (mode === "online") {
+    return <OnlineSetup onBack={() => setMode("menu")} />;
+  }
+
+  if (!game) return <SetupScreen onStart={handleStart} onOnlineMode={() => setMode("online")} />;
 
   switch (game.phase) {
     case "viewing":
@@ -62,6 +68,6 @@ export default function Index() {
     case "result":
       return <ResultScreen game={game} onRestart={() => setGame(null)} />;
     default:
-      return <SetupScreen onStart={handleStart} />;
+      return <SetupScreen onStart={handleStart} onOnlineMode={() => setMode("online")} />;
   }
 }
