@@ -5,12 +5,14 @@ import { DiscussionScreen } from "@/components/game/DiscussionScreen";
 import { VotingScreen } from "@/components/game/VotingScreen";
 import { ResultScreen } from "@/components/game/ResultScreen";
 import { createGame, eliminatePlayer, type GameState } from "@/lib/game-logic";
+import { useLanguage } from "@/lib/language-context";
 
 export default function Index() {
   const [game, setGame] = useState<GameState | null>(null);
+  const { language } = useLanguage();
 
   const handleStart = (playerCount: number, spyCount: number, blankCount: number) => {
-    setGame(createGame(playerCount, spyCount, blankCount));
+    setGame(createGame(playerCount, spyCount, blankCount, language));
   };
 
   const handleNextViewer = () => {
