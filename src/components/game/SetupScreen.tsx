@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Users, Eye, EyeOff, Skull } from "lucide-react";
+import { Users, Eye, EyeOff, Skull, Upload, RotateCcw, BookOpen } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { getCustomWords, setCustomWords, getActiveWordBank } from "@/lib/country-pairs";
+import { useToast } from "@/hooks/use-toast";
 
 interface SetupScreenProps {
   onStart: (playerCount: number, spyCount: number, blankCount: number) => void;
@@ -10,13 +12,38 @@ interface SetupScreenProps {
 
 export function SetupScreen({ onStart }: SetupScreenProps) {
   const { t } = useLanguage();
+  const { toast } = useToast();
   const [playerCount, setPlayerCount] = useState(6);
   const [spyCount, setSpyCount] = useState(1);
   const [blankCount, setBlankCount] = useState(0);
+  const [showImport, setShowImport] = useState(false);
+  const [importText, setImportText] = useState("");
+  const customWords = getCustomWords();
+
+  const handleImport = () => {
+    const words = importText
+      .split('\n')
+      .map(w => w.trim())
+      .filter(w => w.length > 0);
+    
+    if (words.length < 10) {
+      toast({ title: t('importHint'), variant: "destructive" });
+      return;
+    }
+
+    setCustomWords(words);
+    setShowImport(false);
+    setImportText("");
+    toast({ title: `${t('importSuccess')}！${words.length} ${t('wordsCount')}` });
+  };
+
+  const handleReset = () => {
+    setCustomWords(null);
+    toast({ title: t('resetToDefault') });
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
-      {/* 语言切换按钮 - 右上角 */}
       <div className="absolute top-6 right-6">
         <LanguageSwitcher />
       </div>
@@ -54,6 +81,60 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
             max={Math.max(0, playerCount - spyCount - 2)}
             onChange={setBlankCount}
           />
+        </div>
+
+        {/* Word Bank Section */}
+        <div className="rounded-xl border border-border bg-card p-4 mt-4">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <BookOpen className="w-4 h-4 text-primary" />
+              <span className="font-heading font-semibold text-sm">{t('wordBank')}</span>
+            </div>
+            <span className="text-xs text-muted-foreground">
+              {customWords ? `${t('customBank')} (${customWords.length} ${t('wordsCount')})` : t('defaultBank')}
+            </span>
+          </div>
+
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowImport(!showImport)}
+              className="flex-1 text-xs"
+            >
+              <Upload className="w-3 h-3 mr-1" />
+              {t('importWords')}
+            </Button>
+            {customWords && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleReset}
+                className="text-xs"
+              >
+                <RotateCcw className="w-3 h-3 mr-1" />
+                {t('resetToDefault')}
+              </Button>
+            )}
+          </div>
+
+          {showImport && (
+            <div className="mt-3 animate-fade-in">
+              <textarea
+                value={importText}
+                onChange={(e) => setImportText(e.target.value)}
+                placeholder={t('importHint')}
+                className="w-full h-32 rounded-lg border border-border bg-secondary p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary/50"
+              />
+              <Button
+                onClick={handleImport}
+                size="sm"
+                className="w-full mt-2 bg-primary hover:bg-primary/90"
+              >
+                {t('importWords')}
+              </Button>
+            </div>
+          )}
         </div>
 
         <Button

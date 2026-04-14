@@ -1,4 +1,5 @@
 import { getRandomPair, type WordPair } from "./country-pairs";
+import type { Language } from "./i18n";
 
 export type PlayerRole = "civilian" | "spy" | "blank";
 
@@ -25,7 +26,8 @@ export interface GameState {
 export function createGame(
   playerCount: number,
   spyCount: number = 1,
-  blankCount: number = 0
+  blankCount: number = 0,
+  language: Language = 'zh'
 ): GameState {
   const pair = getRandomPair();
   const roles: PlayerRole[] = [];
@@ -34,17 +36,19 @@ export function createGame(
   for (let i = 0; i < blankCount; i++) roles.push("blank");
   while (roles.length < playerCount) roles.push("civilian");
 
-  // Shuffle roles
   for (let i = roles.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [roles[i], roles[j]] = [roles[j], roles[i]];
   }
 
+  const playerPrefix = language === 'zh' ? '玩家' : 'Player';
+  const blankWord = language === 'zh' ? '（白板）' : '(Blank)';
+
   const players: Player[] = roles.map((role, i) => ({
     id: i,
-    name: `玩家 ${i + 1}`,
+    name: `${playerPrefix} ${i + 1}`,
     role,
-    word: role === "civilian" ? pair.civilian : role === "spy" ? pair.spy : "（白板）",
+    word: role === "civilian" ? pair.civilian : role === "spy" ? pair.spy : blankWord,
     eliminated: false,
     hasViewed: false,
   }));

@@ -30,33 +30,25 @@ export const countries: string[] = [
   // 波罗的海
   "立陶宛", "拉脱维亚", "爱沙尼亚",
   // 北非
-  "埃及", "摩洛哥", "阿尔及利亚", "突尼斯", "利比亚",
-  "苏丹", "南苏丹", "毛里塔尼亚",
+  "埃及", "利比亚", "突尼斯", "阿尔及利亚", "摩洛哥",
   // 西非
-  "尼日利亚", "加纳", "科特迪瓦", "塞内加尔", "冈比亚",
-  "几内亚", "几内亚比绍", "塞拉利昂", "利比里亚", "马里",
-  "布基纳法索", "尼日尔", "多哥", "贝宁", "佛得角",
-  // 中非
-  "刚果（金）", "刚果（布）", "喀麦隆", "加蓬", "中非",
-  "赤道几内亚", "乍得", "圣多美和普林西比",
+  "尼日利亚", "加纳", "塞内加尔", "科特迪瓦", "马里",
+  "布基纳法索", "几内亚", "塞拉利昂", "利比里亚", "多哥", "贝宁", "尼日尔",
   // 东非
-  "肯尼亚", "坦桑尼亚", "乌干达", "卢旺达", "布隆迪",
-  "埃塞俄比亚", "厄立特里亚", "索马里", "吉布提",
-  "马达加斯加", "毛里求斯", "塞舌尔", "科摩罗", "马拉维", "赞比亚",
+  "肯尼亚", "坦桑尼亚", "埃塞俄比亚", "索马里", "乌干达",
+  "卢旺达", "布隆迪", "厄立特里亚", "吉布提",
   // 南部非洲
-  "南非", "纳米比亚", "博茨瓦纳", "津巴布韦", "莫桑比克",
-  "安哥拉", "莱索托", "斯威士兰",
+  "南非", "纳米比亚", "博茨瓦纳", "津巴布韦", "赞比亚",
+  "莫桑比克", "马达加斯加", "毛里求斯",
+  // 中部非洲
+  "刚果金", "刚果布", "喀麦隆", "加蓬", "乍得", "中非",
   // 北美
   "美国", "加拿大", "墨西哥",
-  // 中美洲
-  "危地马拉", "洪都拉斯", "萨尔瓦多", "尼加拉瓜",
-  "哥斯达黎加", "巴拿马", "伯利兹",
-  // 加勒比
-  "古巴", "牙买加", "多米尼加", "海地", "特立尼达和多巴哥",
-  "巴巴多斯", "巴哈马", "圣卢西亚", "格林纳达", "多米尼克",
-  "安提瓜和巴布达", "圣基茨和尼维斯", "圣文森特和格林纳丁斯",
+  // 中美洲与加勒比
+  "古巴", "牙买加", "海地", "多米尼加", "巴拿马",
+  "哥斯达黎加", "危地马拉", "洪都拉斯", "萨尔瓦多", "尼加拉瓜", "伯利兹",
   // 南美
-  "巴西", "阿根廷", "乌拉圭", "巴拉圭", "智利", "秘鲁",
+  "巴西", "阿根廷", "智利", "秘鲁", "乌拉圭", "巴拉圭",
   "玻利维亚", "哥伦比亚", "委内瑞拉", "厄瓜多尔",
   "圭亚那", "苏里南",
   // 大洋洲
@@ -70,7 +62,36 @@ export interface WordPair {
   spy: string;
 }
 
+// Custom word bank support
+let customWords: string[] | null = null;
+
+export function setCustomWords(words: string[] | null) {
+  customWords = words;
+  if (words) {
+    localStorage.setItem('imposter-custom-words', JSON.stringify(words));
+  } else {
+    localStorage.removeItem('imposter-custom-words');
+  }
+}
+
+export function getCustomWords(): string[] | null {
+  if (customWords) return customWords;
+  const saved = localStorage.getItem('imposter-custom-words');
+  if (saved) {
+    try {
+      customWords = JSON.parse(saved);
+      return customWords;
+    } catch { return null; }
+  }
+  return null;
+}
+
+export function getActiveWordBank(): string[] {
+  return getCustomWords() || countries;
+}
+
 export function getRandomPair(): WordPair {
-  const shuffled = [...countries].sort(() => Math.random() - 0.5);
+  const bank = getActiveWordBank();
+  const shuffled = [...bank].sort(() => Math.random() - 0.5);
   return { civilian: shuffled[0], spy: shuffled[1] };
 }
