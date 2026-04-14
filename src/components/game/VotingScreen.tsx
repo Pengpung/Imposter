@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { UserX } from "lucide-react";
+import { useLanguage } from "@/lib/language-context";
 import type { Player } from "@/lib/game-logic";
 
 interface VotingScreenProps {
@@ -11,13 +12,14 @@ interface VotingScreenProps {
 export function VotingScreen({ players, onEliminate }: VotingScreenProps) {
   const [selected, setSelected] = useState<number | null>(null);
   const alivePlayers = players.filter((p) => !p.eliminated);
+  const { t } = useLanguage();
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
       <div className="w-full max-w-md animate-fade-in">
         <div className="text-center mb-8">
-          <h2 className="font-heading text-3xl font-bold">投票淘汰</h2>
-          <p className="text-muted-foreground mt-2">选择你认为是卧底的玩家</p>
+          <h2 className="font-heading text-3xl font-bold">{t('eliminatePlayer')}</h2>
+          <p className="text-muted-foreground mt-2">{t('selectSuspect')}</p>
         </div>
 
         <div className="space-y-2 mb-6">
@@ -42,7 +44,7 @@ export function VotingScreen({ players, onEliminate }: VotingScreenProps) {
           className="w-full h-12 text-base font-heading font-semibold bg-destructive hover:bg-destructive/90 disabled:opacity-40"
         >
           <UserX className="w-5 h-5 mr-2" />
-          确认淘汰
+          {t('confirmEliminate')}
         </Button>
       </div>
     </div>
