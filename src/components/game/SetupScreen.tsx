@@ -8,9 +8,10 @@ import { useToast } from "@/hooks/use-toast";
 
 interface SetupScreenProps {
   onStart: (playerCount: number, spyCount: number, blankCount: number) => void;
+  onOnlineMode: () => void;
 }
 
-export function SetupScreen({ onStart }: SetupScreenProps) {
+export function SetupScreen({ onStart, onOnlineMode }: SetupScreenProps) {
   const { t } = useLanguage();
   const { toast } = useToast();
   const [playerCount, setPlayerCount] = useState(6);
@@ -137,13 +138,23 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
           )}
         </div>
 
-        <Button
-          onClick={() => onStart(playerCount, spyCount, blankCount)}
-          className="w-full mt-6 h-14 text-lg font-heading font-semibold bg-primary hover:bg-primary/90 animate-pulse-neon"
-        >
-          <Eye className="w-5 h-5 mr-2" />
-          {t('startGame')}
-        </Button>
+        <div className="flex gap-3 mt-6">
+          <Button
+            onClick={() => onStart(playerCount, spyCount, blankCount)}
+            className="flex-1 h-14 text-lg font-heading font-semibold bg-primary hover:bg-primary/90 animate-pulse-neon"
+          >
+            <Eye className="w-5 h-5 mr-2" />
+            {t('localMode')}
+          </Button>
+          <Button
+            onClick={onOnlineMode}
+            variant="outline"
+            className="h-14 px-6 text-lg font-heading font-semibold border-accent/50 text-accent hover:bg-accent/10"
+          >
+            <Users className="w-5 h-5 mr-2" />
+            {t('onlineMode')}
+          </Button>
+        </div>
       </div>
     </div>
   );
