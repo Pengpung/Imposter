@@ -1,4 +1,4 @@
-[简体中文](README.md) | [English](README-en.md)
+[English](README-en.md)
 
 # 欢迎来到“谁是卧底”
 
