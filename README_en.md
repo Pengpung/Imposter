@@ -1,4 +1,4 @@
-[简体中文](README_en.md)
+[简体中文](README.md)
 
 # Welcome to "Who's the Spy"
 
